@@ -13,5 +13,10 @@ namespace ProjetFacturationConsole.App
         {
             this.dateInscription = dateInscription;
         }
+
+        public override void AfficherInfos()
+        {
+            Console.WriteLine($"{Id} - {Nom} - {Email} - {Telephone} - {Adresse} - {Ville} - {CodePostal} - {DateInscription:dd/MM/yyyy}");
+        }
     }
 }
