@@ -88,5 +88,61 @@ namespace ProjetFacturationConsole.App
                 File.WriteAllText("entreprises.json", json);
             }
         }
+
+        public void ChargerClientsDepuisJson()
+        {
+            if (File.Exists("clients.json"))
+            {
+                string json = File.ReadAllText("clients.json");
+                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                Clients = JsonSerializer.Deserialize<List<Client>>(json, options) ?? new List<Client>();
+                DictionnaireClients.Clear();
+                foreach (var c in Clients)
+                {
+                    DictionnaireClients[c.Id] = c;
+                }
+            }
+        }
+
+        public void ChargerEntreprisesDepuisJson()
+        {
+            if (File.Exists("entreprises.json"))
+            {
+                string json = File.ReadAllText("entreprises.json");
+                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                Entreprises = JsonSerializer.Deserialize<List<Entreprise>>(json, options) ?? new List<Entreprise>();
+                DictionnaireEntreprises.Clear();
+                foreach (var e in Entreprises)
+                {
+                    DictionnaireEntreprises[e.Id] = e;
+                }
+            }
+        }
+
+        public void AfficherClients()
+        {
+            if (Clients == null || Clients.Count == 0)
+            {
+                ChargerClientsDepuisJson();
+            }
+            
+            foreach (var c in Clients)
+            {
+                Console.WriteLine($"{c.Id} - {c.Nom}");
+            }
+        }
+
+        public void AfficherEntreprises()
+        {
+            if (Entreprises == null || Entreprises.Count == 0)
+            {
+                ChargerEntreprisesDepuisJson();
+            }
+            
+            foreach (var e in Entreprises)
+            {
+                Console.WriteLine($"{e.Id} - {e.Nom}");
+            }
+        }
     }
 }

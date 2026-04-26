@@ -8,16 +8,11 @@ namespace ProjetFacturationConsole.App
         {
             GestionFacturation gestion = new GestionFacturation();
             
-            gestion.ImporterClientsDepuisCsv();
-            Console.WriteLine($"Clients importés : {gestion.Clients.Count}");
+            Console.WriteLine("--- Affichage des Clients ---");
+            gestion.AfficherClients();
             
-            gestion.ImporterEntreprisesDepuisCsv();
-            Console.WriteLine($"Entreprises importées : {gestion.Entreprises.Count}");
-            
-            if (System.IO.File.Exists("clients.json") && System.IO.File.Exists("entreprises.json"))
-            {
-                Console.WriteLine("Les fichiers JSON ont été générés avec succès.");
-            }
+            Console.WriteLine("\n--- Affichage des Entreprises ---");
+            gestion.AfficherEntreprises();
         }
     }
 }
