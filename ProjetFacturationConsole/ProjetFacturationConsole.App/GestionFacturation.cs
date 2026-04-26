@@ -144,5 +144,72 @@ namespace ProjetFacturationConsole.App
                 Console.WriteLine($"{e.Id} - {e.Nom}");
             }
         }
+
+        public void CreerFacture()
+        {
+            if (Clients == null || Clients.Count == 0) ChargerClientsDepuisJson();
+            if (Entreprises == null || Entreprises.Count == 0) ChargerEntreprisesDepuisJson();
+
+            AfficherEntreprises();
+            Console.Write("Saisir l'identifiant de l'entreprise : ");
+            int idEntreprise = int.Parse(Console.ReadLine());
+            Entreprise entreprise = DictionnaireEntreprises[idEntreprise];
+
+            AfficherClients();
+            Console.Write("Saisir l'identifiant du client : ");
+            int idClient = int.Parse(Console.ReadLine());
+            Client client = DictionnaireClients[idClient];
+
+            Console.Write("Saisir le numéro de la facture : ");
+            string numero = Console.ReadLine();
+
+            Console.Write("Saisir la date d'émission (jj/mm/aaaa) : ");
+            DateTime dateEmission = DateTime.Parse(Console.ReadLine());
+            DateTime dateEcheance = dateEmission.AddDays(30);
+
+            Facture facture = new Facture(numero, dateEmission, client, entreprise, dateEcheance, "Brouillon");
+
+            bool continuer = true;
+            while (continuer)
+            {
+                Console.Write("Saisir la description : ");
+                string description = Console.ReadLine();
+
+                Console.Write("Saisir la quantité : ");
+                int quantite = int.Parse(Console.ReadLine());
+
+                Console.Write("Saisir le prix unitaire HT : ");
+                decimal prixUnitaireHT = decimal.Parse(Console.ReadLine());
+
+                Console.Write("Saisir le taux de TVA : ");
+                decimal tauxTVA = decimal.Parse(Console.ReadLine());
+
+                LigneFacture ligne = new LigneFacture(description, quantite, prixUnitaireHT, tauxTVA);
+                facture.AjouterLigne(ligne);
+
+                Console.Write("Voulez-vous ajouter une autre ligne ? (oui/non) ");
+                string rep = Console.ReadLine();
+                if (rep == null || rep.ToLower() != "oui")
+                {
+                    continuer = false;
+                }
+            }
+
+            facture.AfficherFacture();
+
+            Console.Write("Confirmer la génération du fichier texte ? (oui/non) ");
+            string repConfirmation = Console.ReadLine();
+            if (repConfirmation != null && repConfirmation.ToLower() == "oui")
+            {
+                GenererFichierTexteFacture(facture);
+                Console.WriteLine("Fichier généré avec succès.");
+            }
+        }
+
+        public void GenererFichierTexteFacture(Facture facture)
+        {
+            string nomFichier = $"facture_{facture.Numero}.txt";
+            File.WriteAllText(nomFichier, facture.ConstruireTexteFacture());
+        }
     }
 }

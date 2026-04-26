@@ -13,6 +13,8 @@ namespace ProjetFacturationConsole.App
             
             Console.WriteLine("\n--- Affichage des Entreprises ---");
             gestion.AfficherEntreprises();
+
+            gestion.CreerFacture();
         }
     }
 }

@@ -1,0 +1,13 @@
+FACTURE
+Numéro : 11
+Date d'émission : 23/10/2007
+Date d'échéance : 22/11/2007
+Statut : Brouillon
+Entreprise : 1 - TechNova - contact@technova.fr - 322000001 - 25 rue des Lilas - Amiens - 80000 - 1,23457E+13
+Client : 1 - Paul Durand - paul.durand@mail.fr - 611223344 - 12 rue Victor Hugo - Amiens - 80000 - 12/03/2024
+Lignes :
+1. bqjzdjkqbzjkndokqlz - Qté : 23 - PU HT : 12 - TVA : 53 - Total HT : 276 - Total TTC : 422,28
+2. yuzqgdyuiqzgigdbbqz - Qté : 89 - PU HT : 6124 - TVA : 16 - Total HT : 545036 - Total TTC : 632241,76
+Total HT : 545312
+Total TVA : 87352,04
+Total TTC : 632664,04
