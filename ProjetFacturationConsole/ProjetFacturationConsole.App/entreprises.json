@@ -1,0 +1,62 @@
+[
+  {
+    "Siret": "1,23457E\u002B13",
+    "Id": 1,
+    "Nom": "TechNova",
+    "Email": "contact@technova.fr",
+    "Telephone": "322000001",
+    "Adresse": "25 rue des Lilas",
+    "Ville": "Amiens",
+    "CodePostal": "80000"
+  },
+  {
+    "Siret": "2,34568E\u002B13",
+    "Id": 2,
+    "Nom": "DevSolutions",
+    "Email": "contact@devsolutions.fr",
+    "Telephone": "322000002",
+    "Adresse": "8 boulevard Faidherbe",
+    "Ville": "Lille",
+    "CodePostal": "59000"
+  },
+  {
+    "Siret": "3,45679E\u002B13",
+    "Id": 3,
+    "Nom": "WebAgency",
+    "Email": "admin@webagency.com",
+    "Telephone": "144556677",
+    "Adresse": "102 avenue de France",
+    "Ville": "Paris",
+    "CodePostal": "75013"
+  },
+  {
+    "Siret": "4,56789E\u002B13",
+    "Id": 4,
+    "Nom": "StartDev",
+    "Email": "contact@startdev.io",
+    "Telephone": "322000044",
+    "Adresse": "1 place de l\u0027H\u00F4tel de Ville",
+    "Ville": "Amiens",
+    "CodePostal": "80000"
+  },
+  {
+    "Siret": "5,6789E\u002B13",
+    "Id": 5,
+    "Nom": "CloudNet",
+    "Email": "support@cloudnet.fr",
+    "Telephone": "450112233",
+    "Adresse": "50 square de la Lib\u00E9ration",
+    "Ville": "Lyon",
+    "CodePostal": "69000"
+  },
+  {
+    "Siret": "6,78901E\u002B13",
+    "Id": 6,
+    "Nom": "DataCorp",
+    "Email": "info@datacorp.com",
+    "Telephone": "299887766",
+    "Adresse": "14 route de Nantes",
+    "Ville": "Rennes",
+    "CodePostal": "35000"
+  }
+]

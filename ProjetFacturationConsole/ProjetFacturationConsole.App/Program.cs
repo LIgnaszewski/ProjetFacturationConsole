@@ -6,20 +6,18 @@ namespace ProjetFacturationConsole.App
     {
         static void Main(string[] args)
         {
-            Client c = new Client(1, "Paul Durand", "paul@mail.fr", "0606060606", "1 rue A", "Paris", "75000", DateTime.Now);
-            Entreprise e = new Entreprise(2, "TechNova", "tech@nova.fr", "0303030303", "2 rue B", "Lyon", "69000", "12345678900011");
+            GestionFacturation gestion = new GestionFacturation();
             
-            c.AfficherInfos();
-            e.AfficherInfos();
-
-            LigneFacture lf1 = new LigneFacture("Dev", 2, 150m, 20m);
-            LigneFacture lf2 = new LigneFacture("Maintenance", 1, 80m, 10m);
-
-            Facture f = new Facture("F001", DateTime.Now, c, e, DateTime.Now.AddDays(30), "Brouillon");
-            f.AjouterLigne(lf1);
-            f.AjouterLigne(lf2);
-
-            f.AfficherFacture();
+            gestion.ImporterClientsDepuisCsv();
+            Console.WriteLine($"Clients importés : {gestion.Clients.Count}");
+            
+            gestion.ImporterEntreprisesDepuisCsv();
+            Console.WriteLine($"Entreprises importées : {gestion.Entreprises.Count}");
+            
+            if (System.IO.File.Exists("clients.json") && System.IO.File.Exists("entreprises.json"))
+            {
+                Console.WriteLine("Les fichiers JSON ont été générés avec succès.");
+            }
         }
     }
 }
