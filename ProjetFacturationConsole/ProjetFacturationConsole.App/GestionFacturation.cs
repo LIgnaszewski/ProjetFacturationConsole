@@ -290,5 +290,54 @@ namespace ProjetFacturationConsole.App
                 p.AfficherInfos();
             }
         }
+
+        public void AfficherMenu()
+        {
+            string choix = "";
+            while (choix != "0")
+            {
+                Console.WriteLine("\n--- MENU ---");
+                Console.WriteLine("1 - Importer les clients depuis le CSV");
+                Console.WriteLine("2 - Importer les entreprises depuis le CSV");
+                Console.WriteLine("3 - Afficher les clients");
+                Console.WriteLine("4 - Afficher les entreprises");
+                Console.WriteLine("5 - Créer une facture");
+                Console.WriteLine("6 - Afficher le carnet de contacts");
+                Console.WriteLine("0 - Quitter");
+                Console.Write("Votre choix : ");
+                
+                choix = Console.ReadLine();
+                
+                switch (choix)
+                {
+                    case "1":
+                        ImporterClientsDepuisCsv();
+                        Console.WriteLine("Importation des clients terminée.");
+                        break;
+                    case "2":
+                        ImporterEntreprisesDepuisCsv();
+                        Console.WriteLine("Importation des entreprises terminée.");
+                        break;
+                    case "3":
+                        AfficherClients();
+                        break;
+                    case "4":
+                        AfficherEntreprises();
+                        break;
+                    case "5":
+                        CreerFacture();
+                        break;
+                    case "6":
+                        AfficherCarnetContacts();
+                        break;
+                    case "0":
+                        Console.WriteLine("Au revoir !");
+                        break;
+                    default:
+                        Console.WriteLine("Choix invalide. Veuillez réessayer.");
+                        break;
+                }
+            }
+        }
     }
 }
