@@ -275,5 +275,20 @@ namespace ProjetFacturationConsole.App
             string nomFichier = $"facture_{facture.Numero}.txt";
             File.WriteAllText(nomFichier, facture.ConstruireTexteFacture());
         }
+
+        public void AfficherCarnetContacts()
+        {
+            if (Clients == null || Clients.Count == 0) ChargerClientsDepuisJson();
+            if (Entreprises == null || Entreprises.Count == 0) ChargerEntreprisesDepuisJson();
+
+            List<Personne> contacts = new List<Personne>();
+            contacts.AddRange(Clients);
+            contacts.AddRange(Entreprises);
+
+            foreach (Personne p in contacts)
+            {
+                p.AfficherInfos();
+            }
+        }
     }
 }
