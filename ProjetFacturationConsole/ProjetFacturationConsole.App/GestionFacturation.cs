@@ -35,21 +35,28 @@ namespace ProjetFacturationConsole.App
                     if (string.IsNullOrWhiteSpace(line)) continue;
                     if (line.StartsWith("id", StringComparison.OrdinalIgnoreCase)) continue;
 
-                    var parts = line.Split(';');
-                    if (parts.Length >= 8)
+                    try
                     {
-                        int id = int.Parse(parts[0]);
-                        string nom = parts[1];
-                        string email = parts[2];
-                        string telephone = parts[3];
-                        string adresse = parts[4];
-                        string ville = parts[5];
-                        string codePostal = parts[6];
-                        DateTime dateInscription = DateTime.Parse(parts[7]);
+                        var parts = line.Split(';');
+                        if (parts.Length >= 8)
+                        {
+                            int id = int.Parse(parts[0]);
+                            string nom = parts[1];
+                            string email = parts[2];
+                            string telephone = parts[3];
+                            string adresse = parts[4];
+                            string ville = parts[5];
+                            string codePostal = parts[6];
+                            DateTime dateInscription = DateTime.Parse(parts[7]);
 
-                        Client c = new Client(id, nom, email, telephone, adresse, ville, codePostal, dateInscription);
-                        Clients.Add(c);
-                        DictionnaireClients[id] = c;
+                            Client c = new Client(id, nom, email, telephone, adresse, ville, codePostal, dateInscription);
+                            Clients.Add(c);
+                            DictionnaireClients[id] = c;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Erreur lors de l'importation d'un client : {ex.Message}");
                     }
                 }
                 string json = JsonSerializer.Serialize(Clients, new JsonSerializerOptions { WriteIndented = true });
@@ -67,21 +74,28 @@ namespace ProjetFacturationConsole.App
                     if (string.IsNullOrWhiteSpace(line)) continue;
                     if (line.StartsWith("id", StringComparison.OrdinalIgnoreCase)) continue;
 
-                    var parts = line.Split(';');
-                    if (parts.Length >= 8)
+                    try
                     {
-                        int id = int.Parse(parts[0]);
-                        string nom = parts[1];
-                        string email = parts[2];
-                        string telephone = parts[3];
-                        string adresse = parts[4];
-                        string ville = parts[5];
-                        string codePostal = parts[6];
-                        string siret = parts[7];
+                        var parts = line.Split(';');
+                        if (parts.Length >= 8)
+                        {
+                            int id = int.Parse(parts[0]);
+                            string nom = parts[1];
+                            string email = parts[2];
+                            string telephone = parts[3];
+                            string adresse = parts[4];
+                            string ville = parts[5];
+                            string codePostal = parts[6];
+                            string siret = parts[7];
 
-                        Entreprise e = new Entreprise(id, nom, email, telephone, adresse, ville, codePostal, siret);
-                        Entreprises.Add(e);
-                        DictionnaireEntreprises[id] = e;
+                            Entreprise e = new Entreprise(id, nom, email, telephone, adresse, ville, codePostal, siret);
+                            Entreprises.Add(e);
+                            DictionnaireEntreprises[id] = e;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Erreur lors de l'importation d'une entreprise : {ex.Message}");
                     }
                 }
                 string json = JsonSerializer.Serialize(Entreprises, new JsonSerializerOptions { WriteIndented = true });
@@ -151,20 +165,55 @@ namespace ProjetFacturationConsole.App
             if (Entreprises == null || Entreprises.Count == 0) ChargerEntreprisesDepuisJson();
 
             AfficherEntreprises();
-            Console.Write("Saisir l'identifiant de l'entreprise : ");
-            int idEntreprise = int.Parse(Console.ReadLine());
-            Entreprise entreprise = DictionnaireEntreprises[idEntreprise];
+            Entreprise entreprise = null;
+            while (entreprise == null)
+            {
+                try
+                {
+                    Console.Write("Saisir l'identifiant de l'entreprise : ");
+                    int idEntreprise = int.Parse(Console.ReadLine());
+                    entreprise = DictionnaireEntreprises[idEntreprise];
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Erreur : {ex.Message}");
+                }
+            }
 
             AfficherClients();
-            Console.Write("Saisir l'identifiant du client : ");
-            int idClient = int.Parse(Console.ReadLine());
-            Client client = DictionnaireClients[idClient];
+            Client client = null;
+            while (client == null)
+            {
+                try
+                {
+                    Console.Write("Saisir l'identifiant du client : ");
+                    int idClient = int.Parse(Console.ReadLine());
+                    client = DictionnaireClients[idClient];
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Erreur : {ex.Message}");
+                }
+            }
 
             Console.Write("Saisir le numéro de la facture : ");
             string numero = Console.ReadLine();
 
-            Console.Write("Saisir la date d'émission (jj/mm/aaaa) : ");
-            DateTime dateEmission = DateTime.Parse(Console.ReadLine());
+            DateTime dateEmission = DateTime.Now;
+            bool dateValide = false;
+            while (!dateValide)
+            {
+                try
+                {
+                    Console.Write("Saisir la date d'émission (jj/mm/aaaa) : ");
+                    dateEmission = DateTime.Parse(Console.ReadLine());
+                    dateValide = true;
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Erreur : La date saisie est invalide.");
+                }
+            }
             DateTime dateEcheance = dateEmission.AddDays(30);
 
             Facture facture = new Facture(numero, dateEmission, client, entreprise, dateEcheance, "Brouillon");
@@ -172,26 +221,41 @@ namespace ProjetFacturationConsole.App
             bool continuer = true;
             while (continuer)
             {
-                Console.Write("Saisir la description : ");
-                string description = Console.ReadLine();
-
-                Console.Write("Saisir la quantité : ");
-                int quantite = int.Parse(Console.ReadLine());
-
-                Console.Write("Saisir le prix unitaire HT : ");
-                decimal prixUnitaireHT = decimal.Parse(Console.ReadLine());
-
-                Console.Write("Saisir le taux de TVA : ");
-                decimal tauxTVA = decimal.Parse(Console.ReadLine());
-
-                LigneFacture ligne = new LigneFacture(description, quantite, prixUnitaireHT, tauxTVA);
-                facture.AjouterLigne(ligne);
-
-                Console.Write("Voulez-vous ajouter une autre ligne ? (oui/non) ");
-                string rep = Console.ReadLine();
-                if (rep == null || rep.ToLower() != "oui")
+                try
                 {
-                    continuer = false;
+                    Console.Write("Saisir la description : ");
+                    string description = Console.ReadLine();
+
+                    Console.Write("Saisir la quantité : ");
+                    int quantite = int.Parse(Console.ReadLine());
+
+                    Console.Write("Saisir le prix unitaire HT : ");
+                    decimal prixUnitaireHT = decimal.Parse(Console.ReadLine());
+
+                    Console.Write("Saisir le taux de TVA : ");
+                    decimal tauxTVA = decimal.Parse(Console.ReadLine());
+
+                    LigneFacture ligne = new LigneFacture(description, quantite, prixUnitaireHT, tauxTVA);
+                    facture.AjouterLigne(ligne);
+
+                    Console.Write("Voulez-vous ajouter une autre ligne ? (oui/non) ");
+                    string rep = Console.ReadLine();
+                    if (rep == null || rep.ToLower() != "oui")
+                    {
+                        continuer = false;
+                    }
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Erreur : Format de donnée invalide (quantité, prix ou taux).");
+                }
+                catch (ArgumentException ex)
+                {
+                    Console.WriteLine($"Erreur : {ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Erreur inattendue : {ex.Message}");
                 }
             }
 

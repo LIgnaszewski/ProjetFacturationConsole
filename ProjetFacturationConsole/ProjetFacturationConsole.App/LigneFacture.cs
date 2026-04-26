@@ -10,16 +10,35 @@ namespace ProjetFacturationConsole.App
         private decimal tauxTVA;
 
         public string Description { get { return description; } set { description = value; } }
-        public int Quantite { get { return quantite; } set { quantite = value; } }
-        public decimal PrixUnitaireHT { get { return prixUnitaireHT; } set { prixUnitaireHT = value; } }
+        
+        public int Quantite 
+        { 
+            get { return quantite; } 
+            set 
+            { 
+                if (value <= 0) throw new ArgumentException("La quantité doit être supérieure à zéro.");
+                quantite = value; 
+            } 
+        }
+        
+        public decimal PrixUnitaireHT 
+        { 
+            get { return prixUnitaireHT; } 
+            set 
+            { 
+                if (value < 0) throw new ArgumentException("Le prix unitaire HT ne peut pas être négatif.");
+                prixUnitaireHT = value; 
+            } 
+        }
+        
         public decimal TauxTVA { get { return tauxTVA; } set { tauxTVA = value; } }
 
         public LigneFacture(string description, int quantite, decimal prixUnitaireHT, decimal tauxTVA)
         {
-            this.description = description;
-            this.quantite = quantite;
-            this.prixUnitaireHT = prixUnitaireHT;
-            this.tauxTVA = tauxTVA;
+            Description = description;
+            Quantite = quantite;
+            PrixUnitaireHT = prixUnitaireHT;
+            TauxTVA = tauxTVA;
         }
 
         public decimal CalculerTotalHT()
